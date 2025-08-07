@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'login_screen.dart';
 
 class WelcomeScreen extends StatefulWidget {
@@ -20,17 +20,20 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   // Enhanced image list with safety-themed content
   final List<Map<String, String>> slideContent = [
     {
-      'image': 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&h=300&fit=crop',
+      'image':
+          'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&h=300&fit=crop',
       'title': 'Emergency Alert',
       'subtitle': 'Instant help when you need it most'
     },
     {
-      'image': 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&h=300&fit=crop',
+      'image':
+          'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&h=300&fit=crop',
       'title': 'Location Tracking',
       'subtitle': 'Share your location with trusted contacts'
     },
     {
-      'image': 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=500&h=300&fit=crop',
+      'image':
+          'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=500&h=300&fit=crop',
       'title': '24/7 Support',
       'subtitle': 'Always here to keep you safe'
     },
@@ -47,7 +50,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
       duration: const Duration(milliseconds: 1500),
       vsync: this,
     );
-    
+
     _slideController = AnimationController(
       duration: const Duration(milliseconds: 1200),
       vsync: this,
@@ -84,7 +87,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    
+
     return Scaffold(
       body: Container(
         decoration: _buildBackgroundDecoration(),
@@ -116,7 +119,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
         child: Column(
           children: [
             // App Logo/Icon
-            Container(
+            SizedBox(
               width: 150,
               height: 150,
               child: Image.asset(
@@ -127,7 +130,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
               ),
             ),
             const SizedBox(height: 0),
-            
+
             // Title
             const Text(
               'Women Safety',
@@ -139,7 +142,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
               ),
             ),
             const SizedBox(height: 8),
-            
+
             // Subtitle
             Text(
               'Your safety, our commitment',
@@ -165,12 +168,14 @@ class _WelcomeScreenState extends State<WelcomeScreen>
         child: Column(
           children: [
             Expanded(
-              child: CarouselSlider(
+              child: FlutterCarousel(
+                items: slideContent.map((content) {
+                  return _buildCarouselItem(content);
+                }).toList(),
                 options: CarouselOptions(
                   height: double.infinity,
                   viewportFraction: 0.85,
                   enlargeCenterPage: true,
-                  enlargeFactor: 0.2,
                   autoPlay: true,
                   autoPlayInterval: const Duration(seconds: 4),
                   autoPlayAnimationDuration: const Duration(milliseconds: 1000),
@@ -181,9 +186,6 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                     });
                   },
                 ),
-                items: slideContent.map((content) {
-                  return _buildCarouselItem(content);
-                }).toList(),
               ),
             ),
             const SizedBox(height: 20),
@@ -201,7 +203,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.black.withValues(alpha: 0.1),
             blurRadius: 20,
             offset: const Offset(0, 10),
             spreadRadius: 2,
@@ -222,7 +224,8 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                   color: Colors.grey[200],
                   child: const Center(
                     child: CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF9D21B9)),
+                      valueColor:
+                          AlwaysStoppedAnimation<Color>(Color(0xFF9D21B9)),
                     ),
                   ),
                 );
@@ -235,7 +238,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                   end: Alignment.bottomCenter,
                   colors: [
                     Colors.transparent,
-                    Colors.black.withOpacity(0.7),
+                    Colors.black.withValues(alpha: 0.7),
                   ],
                 ),
               ),
@@ -296,8 +299,6 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     return const SizedBox.shrink(); // Remove feature cards
   }
 
-
-
   Widget _buildBottomSection() {
     return Expanded(
       child: Padding(
@@ -316,7 +317,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                 borderRadius: BorderRadius.circular(16),
                 boxShadow: [
                   BoxShadow(
-                    color: const Color(0xFF9D21B9).withOpacity(0.4),
+                    color: const Color(0xFF9D21B9).withValues(alpha: 0.4),
                     blurRadius: 15,
                     offset: const Offset(0, 8),
                   ),
@@ -342,7 +343,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
               ),
             ),
             const SizedBox(height: 16),
-            
+
             // Secondary text
             Text(
               'Join thousands of women staying safe',
@@ -363,7 +364,8 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     Navigator.push(
       context,
       PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) => const LoginScreen(),
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            const LoginScreen(),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           const begin = Offset(1.0, 0.0);
           const end = Offset.zero;

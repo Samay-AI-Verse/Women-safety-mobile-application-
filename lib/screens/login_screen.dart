@@ -8,7 +8,8 @@ class LoginScreen extends StatefulWidget {
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin {
+class _LoginScreenState extends State<LoginScreen>
+    with TickerProviderStateMixin {
   late AnimationController _fadeController;
   late AnimationController _slideController;
   late AnimationController _pulseController;
@@ -31,7 +32,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
       duration: const Duration(milliseconds: 2000),
       vsync: this,
     );
-    
+
     _fadeAnimation = Tween<double>(
       begin: 0.0,
       end: 1.0,
@@ -39,7 +40,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
       parent: _fadeController,
       curve: Curves.easeInOut,
     ));
-    
+
     _slideAnimation = Tween<Offset>(
       begin: const Offset(0, 0.4),
       end: Offset.zero,
@@ -55,7 +56,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
       parent: _pulseController,
       curve: Curves.easeInOut,
     ));
-    
+
     _fadeController.forward();
     Future.delayed(const Duration(milliseconds: 300), () {
       _slideController.forward();
@@ -99,7 +100,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     const Spacer(flex: 1),
-                    
+
                     // Animated App Logo with gradient
                     AnimatedBuilder(
                       animation: _pulseAnimation,
@@ -122,7 +123,8 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                               ),
                               boxShadow: [
                                 BoxShadow(
-                                  color: const Color(0xFF9D21B9).withOpacity(0.3),
+                                  color:
+                                      const Color(0xFF9D21B9).withValues(alpha: 0.3),
                                   blurRadius: 25,
                                   spreadRadius: 5,
                                   offset: const Offset(0, 8),
@@ -138,9 +140,9 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                         );
                       },
                     ),
-                    
+
                     const SizedBox(height: 40),
-                    
+
                     // Main Title with gradient
                     ShaderMask(
                       shaderCallback: (bounds) => const LinearGradient(
@@ -163,9 +165,9 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                         ),
                       ),
                     ),
-                    
+
                     const SizedBox(height: 12),
-                    
+
                     // Subtitle with modern styling
                     const Text(
                       'Your Safety, Our Priority',
@@ -178,9 +180,9 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                         letterSpacing: 0.5,
                       ),
                     ),
-                    
+
                     const SizedBox(height: 60),
-                    
+
                     // Login prompt
                     const Text(
                       'Choose your sign-in method',
@@ -192,19 +194,19 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                         letterSpacing: 0.3,
                       ),
                     ),
-                    
+
                     const SizedBox(height: 32),
-              
+
                     // Google Login Button
                     _buildGoogleLoginButton(),
-                    
+
                     const SizedBox(height: 20),
-                    
+
                     // Apple Login Button
                     _buildAppleLoginButton(),
-                    
+
                     const SizedBox(height: 40),
-                    
+
                     // Safety message with modern design
                     Container(
                       padding: const EdgeInsets.all(20),
@@ -212,12 +214,12 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(
-                          color: const Color(0xFF9D21B9).withOpacity(0.2),
+                          color: const Color(0xFF9D21B9).withValues(alpha: 0.2),
                           width: 1.5,
                         ),
                         boxShadow: [
                           BoxShadow(
-                            color: const Color(0xFF9D21B9).withOpacity(0.1),
+                            color: const Color(0xFF9D21B9).withValues(alpha: 0.1),
                             blurRadius: 15,
                             offset: const Offset(0, 6),
                           ),
@@ -243,12 +245,12 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                             ),
                           ),
                           const SizedBox(width: 15),
-                          Expanded(
+                          const Expanded(
                             child: Text(
                               'Your safety and privacy are our top priority',
                               style: TextStyle(
                                 fontSize: 14,
-                                color: const Color(0xFF58127B), // Dark purple
+                                color: Color(0xFF58127B), // Dark purple
                                 fontWeight: FontWeight.w600,
                                 height: 1.4,
                               ),
@@ -257,9 +259,9 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                         ],
                       ),
                     ),
-                    
+
                     const Spacer(flex: 2),
-                    
+
                     // Terms and Privacy with modern styling
                     Padding(
                       padding: const EdgeInsets.only(bottom: 20),
@@ -315,7 +317,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.08),
+            color: Colors.black.withValues(alpha: 0.08),
             blurRadius: 12,
             offset: const Offset(0, 4),
           ),
@@ -363,12 +365,12 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                   ),
                 ),
                 const SizedBox(width: 12),
-                Text(
+                const Text(
                   'Continue with Google',
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
-                    color: const Color(0xFF333333),
+                    color: Color(0xFF333333),
                     letterSpacing: 0.3,
                   ),
                 ),
@@ -389,7 +391,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.15),
+            color: Colors.black.withValues(alpha: 0.15),
             blurRadius: 12,
             offset: const Offset(0, 4),
           ),
@@ -412,18 +414,18 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
             );
           },
           borderRadius: BorderRadius.circular(16),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 // Apple Logo
-                const Icon(
+                Icon(
                   Icons.apple,
                   size: 24,
                   color: Colors.white,
                 ),
-                const SizedBox(width: 12),
+                SizedBox(width: 12),
                 Text(
                   'Continue with Apple',
                   style: TextStyle(
