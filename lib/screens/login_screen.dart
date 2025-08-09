@@ -8,38 +8,7 @@ class LoginScreen extends StatefulWidget {
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen>
-    with TickerProviderStateMixin {
-  late AnimationController _pulseController;
-  late Animation<double> _pulseAnimation;
-
-  @override
-  void initState() {
-    super.initState();
-    _setupAnimations();
-  }
-
-  void _setupAnimations() {
-    _pulseController = AnimationController(
-      duration: const Duration(milliseconds: 3000),
-      vsync: this,
-    );
-    _pulseAnimation = Tween<double>(
-      begin: 1.0,
-      end: 1.08,
-    ).animate(CurvedAnimation(
-      parent: _pulseController,
-      curve: Curves.easeInOut,
-    ));
-    _pulseController.repeat(reverse: true);
-  }
-
-  @override
-  void dispose() {
-    _pulseController.dispose();
-    super.dispose();
-  }
-
+class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -88,93 +57,82 @@ class _LoginScreenState extends State<LoginScreen>
   Widget _buildHeader() {
     return Column(
       children: [
-        // Animated Logo (only this animates)
-        AnimatedBuilder(
-          animation: _pulseAnimation,
-          builder: (context, child) {
-            return Stack(
-              alignment: Alignment.center,
-              children: [
-                // Outer glow effect
-                Container(
-                  width: 140 * _pulseAnimation.value,
-                  height: 140 * _pulseAnimation.value,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(35),
-                    gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [
-                        const Color(0xFF9D21B9).withOpacity(0.1),
-                        const Color(0xFFF956A7).withOpacity(0.1),
-                      ],
-                    ),
-                  ),
+        // Enhanced App Logo with multiple layers - NOW STATIC
+        Stack(
+          alignment: Alignment.center,
+          children: [
+            // Outer glow effect
+            Container(
+              width: 140,
+              height: 140,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(35),
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    const Color(0xFF9D21B9).withOpacity(0.1),
+                    const Color(0xFFF956A7).withOpacity(0.1),
+                  ],
                 ),
-                // Main logo container
-                Transform.scale(
-                  scale: _pulseAnimation.value,
-                  child: Container(
-                    width: 130,
-                    height: 130,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(32),
-                      gradient: const LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: [
-                          Color(0xFF9D21B9),
-                          Color(0xFFF956A7),
-                          Color(0xFFE91E63),
-                        ],
-                        stops: [0.0, 0.6, 1.0],
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: const Color(0xFF9D21B9).withOpacity(0.4),
-                          blurRadius: 30,
-                          spreadRadius: 5,
-                          offset: const Offset(0, 12),
-                        ),
-                        BoxShadow(
-                          color: const Color(0xFFF956A7).withOpacity(0.3),
-                          blurRadius: 20,
-                          spreadRadius: 2,
-                          offset: const Offset(0, 8),
-                        ),
-                      ],
-                    ),
-                    child: Center(
-                      child: Image.asset(
-                        'assets/logo.png',
-                        width: 70,
-                        height: 70,
-                        fit: BoxFit.contain,
-                      ),
-                    ),
-                  ),
+              ),
+            ),
+            // Main logo container
+            Container(
+              width: 130,
+              height: 130,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(32),
+                gradient: const LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    Color(0xFF9D21B9),
+                    Color(0xFFF956A7),
+                    Color(0xFFE91E63),
+                  ],
+                  stops: [0.0, 0.6, 1.0],
                 ),
-                // Inner highlight
-                Positioned(
-                  top: 25,
-                  left: 25,
-                  child: Container(
-                    width: 35,
-                    height: 35,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Colors.white.withOpacity(0.2),
-                    ),
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color(0xFF9D21B9).withOpacity(0.4),
+                    blurRadius: 30,
+                    spreadRadius: 5,
+                    offset: const Offset(0, 12),
                   ),
+                  BoxShadow(
+                    color: const Color(0xFFF956A7).withOpacity(0.3),
+                    blurRadius: 20,
+                    spreadRadius: 2,
+                    offset: const Offset(0, 8),
+                  ),
+                ],
+              ),
+              child: const Icon(
+                Icons.shield_rounded,
+                color: Colors.white,
+                size: 65,
+              ),
+            ),
+            // Inner highlight
+            Positioned(
+              top: 25,
+              left: 25,
+              child: Container(
+                width: 35,
+                height: 35,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: Colors.white.withOpacity(0.2),
                 ),
-              ],
-            );
-          },
+              ),
+            ),
+          ],
         ),
 
         const SizedBox(height: 32),
 
-        // Main Title
+        // Static Main Title with gradient (NO ANIMATION)
         ShaderMask(
           shaderCallback: (bounds) => const LinearGradient(
             begin: Alignment.topLeft,
@@ -202,7 +160,7 @@ class _LoginScreenState extends State<LoginScreen>
 
         const SizedBox(height: 16),
 
-        // Subtitle badge
+        // Static subtitle (NO ANIMATION)
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
           decoration: BoxDecoration(
@@ -227,14 +185,23 @@ class _LoginScreenState extends State<LoginScreen>
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
-            children: const [
-              Icon(
-                Icons.security,
-                color: Colors.white,
-                size: 16,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(6),
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [Color(0xFF9D21B9), Color(0xFFF956A7)],
+                  ),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: const Icon(
+                  Icons.security,
+                  color: Colors.white,
+                  size: 16,
+                ),
               ),
-              SizedBox(width: 12),
-              Text(
+              const SizedBox(width: 12),
+              const Text(
                 'Your Safety, Our Priority',
                 style: TextStyle(
                   fontSize: 16,
@@ -252,111 +219,110 @@ class _LoginScreenState extends State<LoginScreen>
 
   Widget _buildLoginSection() {
     return Column(
-        children: [
-          // Professional section header
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.symmetric(vertical: 24),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(24),
-              border: Border.all(
-                color: const Color(0xFF9D21B9).withOpacity(0.15),
-                width: 2,
+      children: [
+        // Professional section header (STATIC - NO ANIMATION)
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(vertical: 24),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(24),
+            border: Border.all(
+              color: const Color(0xFF9D21B9).withOpacity(0.15),
+              width: 2,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: const Color(0xFF9D21B9).withOpacity(0.08),
+                blurRadius: 25,
+                offset: const Offset(0, 10),
+                spreadRadius: 2,
               ),
-              boxShadow: [
-                BoxShadow(
-                  color: const Color(0xFF9D21B9).withOpacity(0.08),
-                  blurRadius: 25,
-                  offset: const Offset(0, 10),
-                  spreadRadius: 2,
-                ),
-              ],
-            ),
-            child: Column(
-              children: [
-                const Text(
-                  'Welcome Back',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.w800,
-                    color: Color(0xFF58127B),
-                    letterSpacing: -0.5,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  'Choose your preferred sign-in method',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w600,
-                    color: const Color(0xFF7E22CE).withOpacity(0.8),
-                    letterSpacing: 0.2,
-                  ),
-                ),
-                const SizedBox(height: 32),
-
-                // Enhanced Google Login Button
-                _buildEnhancedGoogleLoginButton(),
-
-                const SizedBox(height: 16),
-
-                // Enhanced Apple Login Button
-                _buildEnhancedAppleLoginButton(),
-
-                const SizedBox(height: 24),
-
-                // Divider with text
-                Row(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        height: 1,
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [
-                              Colors.transparent,
-                              const Color(0xFF9D21B9).withOpacity(0.3),
-                              Colors.transparent,
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Text(
-                        'Secure & Private',
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: const Color(0xFF7E22CE).withOpacity(0.7),
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: Container(
-                        height: 1,
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [
-                              Colors.transparent,
-                              const Color(0xFF9D21B9).withOpacity(0.3),
-                              Colors.transparent,
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
+            ],
           ),
-        ],
-      ),
+          child: Column(
+            children: [
+              const Text(
+                'Welcome Back',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.w800,
+                  color: Color(0xFF58127B),
+                  letterSpacing: -0.5,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'Choose your preferred sign-in method',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                  color: const Color(0xFF7E22CE).withOpacity(0.8),
+                  letterSpacing: 0.2,
+                ),
+              ),
+              const SizedBox(height: 32),
+
+              // Enhanced Google Login Button (STATIC)
+              _buildEnhancedGoogleLoginButton(),
+
+              const SizedBox(height: 16),
+
+              // Enhanced Apple Login Button (STATIC)
+              _buildEnhancedAppleLoginButton(),
+
+              const SizedBox(height: 24),
+
+              // Divider with text (STATIC)
+              Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                      height: 1,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            Colors.transparent,
+                            const Color(0xFF9D21B9).withOpacity(0.3),
+                            Colors.transparent,
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Text(
+                      'Secure & Private',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: const Color(0xFF7E22CE).withOpacity(0.7),
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
+                      height: 1,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            Colors.transparent,
+                            const Color(0xFF9D21B9).withOpacity(0.3),
+                            Colors.transparent,
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 
@@ -518,165 +484,165 @@ class _LoginScreenState extends State<LoginScreen>
 
   Widget _buildSecurityMessage() {
     return Container(
-        margin: const EdgeInsets.symmetric(horizontal: 8),
-        padding: const EdgeInsets.all(24),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(24),
-          border: Border.all(
-            color: const Color(0xFF9D21B9).withOpacity(0.2),
-            width: 2,
+      margin: const EdgeInsets.symmetric(horizontal: 8),
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(
+          color: const Color(0xFF9D21B9).withOpacity(0.2),
+          width: 2,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFF9D21B9).withOpacity(0.1),
+            blurRadius: 20,
+            offset: const Offset(0, 8),
+            spreadRadius: 2,
           ),
-          boxShadow: [
-            BoxShadow(
-              color: const Color(0xFF9D21B9).withOpacity(0.1),
-              blurRadius: 20,
-              offset: const Offset(0, 8),
-              spreadRadius: 2,
-            ),
-          ],
-        ),
-        child: Row(
-          children: [
-            Container(
-              width: 60,
-              height: 60,
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    Color(0xFF9D21B9),
-                    Color(0xFFF956A7),
-                  ],
+        ],
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 60,
+            height: 60,
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  Color(0xFF9D21B9),
+                  Color(0xFFF956A7),
+                ],
+              ),
+              borderRadius: BorderRadius.circular(18),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0xFF9D21B9).withOpacity(0.3),
+                  blurRadius: 10,
+                  offset: const Offset(0, 4),
                 ),
-                borderRadius: BorderRadius.circular(18),
-                boxShadow: [
-                  BoxShadow(
-                    color: const Color(0xFF9D21B9).withOpacity(0.3),
-                    blurRadius: 10,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
-              ),
-              child: const Icon(
-                Icons.verified_user_rounded,
-                color: Colors.white,
-                size: 28,
-              ),
+              ],
             ),
-            const SizedBox(width: 20),
-            const Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Bank-Level Security',
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Color(0xFF58127B),
-                      fontWeight: FontWeight.w800,
-                      letterSpacing: -0.3,
-                    ),
-                  ),
-                  SizedBox(height: 6),
-                  Text(
-                    'Your privacy and safety data are encrypted and protected with industry-leading security standards.',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Color(0xFF7E22CE),
-                      fontWeight: FontWeight.w500,
-                      height: 1.4,
-                      letterSpacing: 0.1,
-                    ),
-                  ),
-                ],
-              ),
+            child: const Icon(
+              Icons.verified_user_rounded,
+              color: Colors.white,
+              size: 28,
             ),
-          ],
-        ),
-      );
+          ),
+          const SizedBox(width: 20),
+          const Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Bank-Level Security',
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Color(0xFF58127B),
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: -0.3,
+                  ),
+                ),
+                SizedBox(height: 6),
+                Text(
+                  'Your privacy and safety data are encrypted and protected with industry-leading security standards.',
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Color(0xFF7E22CE),
+                    fontWeight: FontWeight.w500,
+                    height: 1.4,
+                    letterSpacing: 0.1,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _buildFooter() {
     return Column(
-        children: [
-          // Trust indicators
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              _buildTrustIndicator(Icons.security, 'Secure'),
-              const SizedBox(width: 32),
-              _buildTrustIndicator(Icons.verified, 'Verified'),
-              const SizedBox(width: 32),
-              _buildTrustIndicator(Icons.shield, 'Protected'),
-            ],
-          ),
+      children: [
+        // Trust indicators (STATIC - NO ANIMATION)
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _buildTrustIndicator(Icons.security, 'Secure'),
+            const SizedBox(width: 32),
+            _buildTrustIndicator(Icons.verified, 'Verified'),
+            const SizedBox(width: 32),
+            _buildTrustIndicator(Icons.shield, 'Protected'),
+          ],
+        ),
 
-          const SizedBox(height: 32),
+        const SizedBox(height: 32),
 
-          // Enhanced Terms and Privacy
-          Container(
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              color: const Color(0xFF9D21B9).withOpacity(0.05),
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(
-                color: const Color(0xFF9D21B9).withOpacity(0.1),
-                width: 1,
-              ),
+        // Enhanced Terms and Privacy (STATIC)
+        Container(
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: const Color(0xFF9D21B9).withOpacity(0.05),
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(
+              color: const Color(0xFF9D21B9).withOpacity(0.1),
+              width: 1,
             ),
-            child: RichText(
-              textAlign: TextAlign.center,
-              text: const TextSpan(
-                style: TextStyle(
-                  fontSize: 13,
-                  color: Color(0xFF7E22CE),
-                  height: 1.5,
-                  letterSpacing: 0.2,
+          ),
+          child: RichText(
+            textAlign: TextAlign.center,
+            text: const TextSpan(
+              style: TextStyle(
+                fontSize: 13,
+                color: Color(0xFF7E22CE),
+                height: 1.5,
+                letterSpacing: 0.2,
+              ),
+              children: [
+                TextSpan(
+                  text: 'By continuing, you accept our ',
+                  style: TextStyle(fontWeight: FontWeight.w500),
                 ),
-                children: [
-                  TextSpan(
-                    text: 'By continuing, you accept our ',
-                    style: TextStyle(fontWeight: FontWeight.w500),
+                TextSpan(
+                  text: 'Terms of Service',
+                  style: TextStyle(
+                    color: Color(0xFF9D21B9),
+                    fontWeight: FontWeight.w700,
+                    decoration: TextDecoration.underline,
                   ),
-                  TextSpan(
-                    text: 'Terms of Service',
-                    style: TextStyle(
-                      color: Color(0xFF9D21B9),
-                      fontWeight: FontWeight.w700,
-                      decoration: TextDecoration.underline,
-                    ),
+                ),
+                TextSpan(
+                  text: ' and ',
+                  style: TextStyle(fontWeight: FontWeight.w500),
+                ),
+                TextSpan(
+                  text: 'Privacy Policy',
+                  style: TextStyle(
+                    color: Color(0xFF9D21B9),
+                    fontWeight: FontWeight.w700,
+                    decoration: TextDecoration.underline,
                   ),
-                  TextSpan(
-                    text: ' and ',
-                    style: TextStyle(fontWeight: FontWeight.w500),
+                ),
+                TextSpan(
+                  text:
+                      '\n\nYour data is never shared without your explicit consent.',
+                  style: TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xFF58127B),
                   ),
-                  TextSpan(
-                    text: 'Privacy Policy',
-                    style: TextStyle(
-                      color: Color(0xFF9D21B9),
-                      fontWeight: FontWeight.w700,
-                      decoration: TextDecoration.underline,
-                    ),
-                  ),
-                  TextSpan(
-                    text:
-                        '\n\nYour data is never shared without your explicit consent.',
-                    style: TextStyle(
-                      fontSize: 11,
-                      fontWeight: FontWeight.w600,
-                      color: Color(0xFF58127B),
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
+        ),
 
-          const SizedBox(height: 20),
-        ],
-      );
+        const SizedBox(height: 20),
+      ],
+    );
   }
 
   Widget _buildTrustIndicator(IconData icon, String label) {
