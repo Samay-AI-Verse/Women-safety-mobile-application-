@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+// import 'package:flutter_carousel_widget/flutter_carousel_widget';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'login_screen.dart';
 
@@ -20,38 +21,33 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   // Enhanced image list with more impactful, AI-focused content
   final List<Map<String, String>> slideContent = [
     {
-      'image':
-          'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&h=300&fit=crop',
+      'image': 'assets/voiceAsistant.png',
       'title': 'AI Voice Shield',
       'subtitle': 'Real-time threat detection in any conversation.'
     },
     {
-      'image':
-          'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&h=300&fit=crop',
+      'image': 'assets/sosimagewomen.png',
       'title': 'Secret SOS Command',
       'subtitle': 'Activate help discreetly with a hidden word.'
     },
     {
-      'image':
-          'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=500&h=300&fit=crop',
+      'image': 'assets/legal.png',
       'title': 'Your Legal AI',
       'subtitle': 'Instant legal advice and emotional support, 24/7.'
     },
     {
-      'image':
-          'https://images.unsplash.com/photo-1521791136064-7986c2920216?w=500&h=300&fit=crop',
+      'image': 'assets/blackmail.png',
       'title': 'Anti-Blackmail Guard',
-      'subtitle': 'Detects and secures evidence from online threats.'
+      'subtitle':
+          'Detects and secures evidence from online threats and helps file complaints.'
     },
     {
-      'image':
-          'https://images.unsplash.com/photo-1516542076-22a13ca70751?w=500&h=300&fit=crop',
+      'image': 'assets/safelocation.png',
       'title': 'Safe Zone Mapping',
       'subtitle': 'Avoid high-crime areas with intelligent alerts.'
     },
     {
-      'image':
-          'https://images.unsplash.com/photo-1543269865-cbf427effbad?w=500&h=300&fit=crop',
+      'image': 'assets/health.png',
       'title': 'Smart Health Alerts',
       'subtitle': 'Automatic accident detection and medical assistance.'
     },
@@ -64,35 +60,39 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   }
 
   void _setupAnimations() {
-    _fadeController = AnimationController(
-      duration: const Duration(milliseconds: 1500),
-      vsync: this,
-    );
+    try {
+      _fadeController = AnimationController(
+        duration: const Duration(milliseconds: 1500),
+        vsync: this,
+      );
 
-    _slideController = AnimationController(
-      duration: const Duration(milliseconds: 1200),
-      vsync: this,
-    );
+      _slideController = AnimationController(
+        duration: const Duration(milliseconds: 1200),
+        vsync: this,
+      );
 
-    _fadeAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(CurvedAnimation(
-      parent: _fadeController!,
-      curve: Curves.easeInOut,
-    ));
+      _fadeAnimation = Tween<double>(
+        begin: 0.0,
+        end: 1.0,
+      ).animate(CurvedAnimation(
+        parent: _fadeController!,
+        curve: Curves.easeInOut,
+      ));
 
-    _slideAnimation = Tween<Offset>(
-      begin: const Offset(0, 0.3),
-      end: Offset.zero,
-    ).animate(CurvedAnimation(
-      parent: _slideController!,
-      curve: Curves.easeOutCubic,
-    ));
+      _slideAnimation = Tween<Offset>(
+        begin: const Offset(0, 0.3),
+        end: Offset.zero,
+      ).animate(CurvedAnimation(
+        parent: _slideController!,
+        curve: Curves.easeOutCubic,
+      ));
 
-    // Start animations
-    _fadeController!.forward();
-    _slideController!.forward();
+      // Start animations immediately
+      _fadeController!.forward();
+      _slideController!.forward();
+    } catch (e) {
+      // Handle any animation errors gracefully
+    }
   }
 
   @override
@@ -100,6 +100,18 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     _fadeController?.dispose();
     _slideController?.dispose();
     super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Ensure animations are properly initialized
+    if (_fadeController != null && !_fadeController!.isAnimating) {
+      _fadeController!.forward();
+    }
+    if (_slideController != null && !_slideController!.isAnimating) {
+      _slideController!.forward();
+    }
   }
 
   @override
@@ -113,6 +125,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
             SizedBox(height: screenHeight * 0.02),
             _buildHeader(),
             _buildCarouselSection(screenHeight),
+            _buildCompactWelcomeSection(),
             const Spacer(),
             _buildBottomSection(),
             SizedBox(height: screenHeight * 0.02),
@@ -176,7 +189,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                 items: slideContent.map((content) {
                   return _buildCarouselItem(content);
                 }).toList(),
-                options: CarouselOptions(
+                options: FlutterCarouselOptions(
                   height: double.infinity,
                   viewportFraction: 0.85,
                   enlargeCenterPage: true,
@@ -184,13 +197,14 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                   autoPlayInterval: const Duration(seconds: 4),
                   autoPlayAnimationDuration: const Duration(milliseconds: 1000),
                   autoPlayCurve: Curves.easeInOutCubic,
-                  onPageChanged: (index, reason) {
-                    setState(() {
-                      _currentIndex = index;
-                    });
-                  },
-                  // This line removes the dots on the images
                   showIndicator: false,
+                  onPageChanged: (index, reason) {
+                    if (mounted) {
+                      setState(() {
+                        _currentIndex = index;
+                      });
+                    }
+                  },
                 ),
               ),
             ),
@@ -200,6 +214,60 @@ class _WelcomeScreenState extends State<WelcomeScreen>
         ),
       ),
     );
+  }
+
+  Widget _buildImage(String imagePath) {
+    try {
+      if (imagePath.startsWith('assets/')) {
+        return Image.asset(
+          imagePath,
+          fit: BoxFit.cover,
+          errorBuilder: (context, error, stackTrace) {
+            return Container(
+              color: Colors.grey[200],
+              child: const Icon(Icons.broken_image, color: Colors.grey),
+            );
+          },
+        );
+      } else {
+        return Image.network(
+          imagePath,
+          fit: BoxFit.cover,
+          loadingBuilder: (context, child, loadingProgress) {
+            if (loadingProgress == null) return child;
+            return Container(
+              color: Colors.grey[200],
+              child: const Center(
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF9D21B9)),
+                ),
+              ),
+            );
+          },
+          errorBuilder: (context, error, stackTrace) {
+            return Container(
+              color: Colors.grey[200],
+              child: const Icon(Icons.broken_image, color: Colors.grey),
+            );
+          },
+          // Add timeout and retry options
+          frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
+            if (wasSynchronouslyLoaded) return child;
+            return AnimatedOpacity(
+              opacity: frame == null ? 0 : 1,
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeOut,
+              child: child,
+            );
+          },
+        );
+      }
+    } catch (e) {
+      return Container(
+        color: Colors.grey[200],
+        child: const Icon(Icons.broken_image, color: Colors.grey),
+      );
+    }
   }
 
   Widget _buildCarouselItem(Map<String, String> content) {
@@ -221,28 +289,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
         child: Stack(
           fit: StackFit.expand,
           children: [
-            Image.network(
-              content['image']!,
-              fit: BoxFit.cover,
-              loadingBuilder: (context, child, loadingProgress) {
-                if (loadingProgress == null) return child;
-                return Container(
-                  color: Colors.grey[200],
-                  child: const Center(
-                    child: CircularProgressIndicator(
-                      valueColor:
-                          AlwaysStoppedAnimation<Color>(Color(0xFF9D21B9)),
-                    ),
-                  ),
-                );
-              },
-              errorBuilder: (context, error, stackTrace) {
-                return Container(
-                  color: Colors.grey[200],
-                  child: const Icon(Icons.broken_image, color: Colors.grey),
-                );
-              },
-            ),
+            _buildImage(content['image']!),
             Container(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
@@ -312,6 +359,103 @@ class _WelcomeScreenState extends State<WelcomeScreen>
           ),
         );
       }).toList(),
+    );
+  }
+
+  Widget _buildCompactWelcomeSection() {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+      padding: const EdgeInsets.all(20.0),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            const Color(0xFF9D21B9).withOpacity(0.05),
+            const Color(0xFFF956A7).withOpacity(0.05),
+          ],
+        ),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: const Color(0xFF9D21B9).withOpacity(0.2),
+          width: 1,
+        ),
+      ),
+      child: Row(
+        children: [
+          // Icon
+          Container(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                colors: [Color(0xFF9D21B9), Color(0xFFF956A7)],
+              ),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: const Icon(
+              Icons.shield_rounded,
+              color: Colors.white,
+              size: 20,
+            ),
+          ),
+          const SizedBox(width: 16),
+
+          // Text content
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Your AI Guardian Angel',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF2D1B69),
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  '24/7 protection with cutting-edge AI technology',
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: Colors.grey[600],
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          // Trust badge
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            decoration: BoxDecoration(
+              color: const Color(0xFF9D21B9).withOpacity(0.1),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  Icons.verified,
+                  color: const Color(0xFF9D21B9),
+                  size: 14,
+                ),
+                const SizedBox(width: 4),
+                Text(
+                  '50K+',
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: const Color(0xFF9D21B9),
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 

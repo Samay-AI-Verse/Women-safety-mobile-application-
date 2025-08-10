@@ -21,35 +21,35 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       'name': 'Legal Expert',
       'subtitle': 'Women\'s Rights & Law',
       'icon': Icons.gavel,
-      'gradient': [Color(0xFF667EEA), Color(0xFF764BA2)],
+      'gradient': [const Color(0xFF667EEA), const Color(0xFF764BA2)],
       'isActive': true,
     },
     {
       'name': 'Health Assistant',
       'subtitle': 'Medical & Wellness',
       'icon': Icons.local_hospital,
-      'gradient': [Color(0xFF11998E), Color(0xFF38EF7D)],
+      'gradient': [const Color(0xFF11998E), const Color(0xFF38EF7D)],
       'isActive': false,
     },
     {
       'name': 'Safety Guide',
       'subtitle': 'Emergency & Protection',
       'icon': Icons.shield,
-      'gradient': [Color(0xFFFF6B6B), Color(0xFFFF8E8E)],
+      'gradient': [const Color(0xFFFF6B6B), const Color(0xFFFF8E8E)],
       'isActive': false,
     },
     {
       'name': 'Mental Health',
       'subtitle': 'Emotional Support',
       'icon': Icons.psychology,
-      'gradient': [Color(0xFF9D50BB), Color(0xFF6E48AA)],
+      'gradient': [const Color(0xFF9D50BB), const Color(0xFF6E48AA)],
       'isActive': false,
     },
     {
       'name': 'Career Advisor',
       'subtitle': 'Professional Growth',
       'icon': Icons.business_center,
-      'gradient': [Color(0xFFF093FB), Color(0xFFF5576C)],
+      'gradient': [const Color(0xFFF093FB), const Color(0xFFF5576C)],
       'isActive': false,
     },
   ];
@@ -153,7 +153,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               width: 120,
               height: 120,
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.1),
+                color: Colors.white.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(60),
               ),
             ),
@@ -165,7 +165,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               width: 80,
               height: 80,
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.05),
+                color: Colors.white.withValues(alpha: 0.05),
                 borderRadius: BorderRadius.circular(40),
               ),
             ),
@@ -207,7 +207,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           width: 50,
                           height: 50,
                           decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.2),
+                            color: Colors.white.withValues(alpha: 0.2),
                             borderRadius: BorderRadius.circular(25),
                             border: Border.all(
                                 color: Colors.white.withOpacity(0.3), width: 2),
