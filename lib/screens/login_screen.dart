@@ -16,170 +16,233 @@ class _LoginScreenState extends State<LoginScreen> {
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(height: screenHeight * 0.02), // Reduced top space
-                _buildHeader(screenWidth, screenHeight),
-                SizedBox(height: screenHeight * 0.06),
-                _buildLoginSection(),
-                SizedBox(height: screenHeight * 0.05),
-                _buildSecurityMessage(),
-                SizedBox(height: screenHeight * 0.05),
-                _buildFooter(),
-                SizedBox(height: screenHeight * 0.02),
-              ],
+      backgroundColor: const Color(0xFFFFFFFF), // Light background
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Color(0xFFFFFFFF), // Soft white
+              Color(0xFFF8F5FF), // Very light lavender
+              Color(0xFFF0EBFF), // Light lavender
+            ],
+          ),
+        ),
+        child: SafeArea(
+          child: FadeTransition(
+            opacity: _fadeAnimation,
+            child: SlideTransition(
+              position: _slideAnimation,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Spacer(flex: 1),
+
+                    // Animated App Logo with gradient
+                    AnimatedBuilder(
+                      animation: _pulseAnimation,
+                      builder: (context, child) {
+                        return Transform.scale(
+                          scale: _pulseAnimation.value,
+                          child: Container(
+                            width: 120,
+                            height: 120,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(30),
+                              gradient: const LinearGradient(
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                                colors: [
+                                  Color(0xFF9D21B9), // Primary purple
+                                  Color(0xFFF956A7), // Pink
+                                  Color(0xFFE91E63), // Accent pink
+                                ],
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: const Color(0xFF9D21B9)
+                                      .withValues(alpha: 0.3),
+                                  blurRadius: 25,
+                                  spreadRadius: 5,
+                                  offset: const Offset(0, 8),
+                                ),
+                              ],
+                            ),
+                            child: const Icon(
+                              Icons.shield_rounded,
+                              color: Colors.white,
+                              size: 60,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+
+                    const SizedBox(height: 40),
+
+                    // Main Title with gradient
+                    ShaderMask(
+                      shaderCallback: (bounds) => const LinearGradient(
+                        colors: [
+                          Color(0xFF9D21B9), // Primary purple
+                          Color(0xFFF956A7), // Pink
+                          Color(0xFF58127B), // Dark purple
+                        ],
+                        stops: [0.0, 0.5, 1.0],
+                      ).createShader(bounds),
+                      child: const Text(
+                        'WomenGuard',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 42,
+                          fontWeight: FontWeight.w900,
+                          color: Colors.white,
+                          letterSpacing: -1.5,
+                          height: 1.1,
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 12),
+
+                    // Subtitle with modern styling
+                    const Text(
+                      'Your Safety, Our Priority',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Color(0xFF58127B), // Dark purple
+                        height: 1.4,
+                        fontWeight: FontWeight.w500,
+                        letterSpacing: 0.5,
+                      ),
+                    ),
+
+                    const SizedBox(height: 60),
+
+                    // Login prompt
+                    const Text(
+                      'Choose your sign-in method',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xFF7E22CE), // Dark purple
+                        letterSpacing: 0.3,
+                      ),
+                    ),
+
+                    const SizedBox(height: 32),
+
+                    // Google Login Button
+                    _buildGoogleLoginButton(),
+
+                    const SizedBox(height: 20),
+
+                    // Apple Login Button
+                    _buildAppleLoginButton(),
+
+                    const SizedBox(height: 40),
+
+                    // Safety message with modern design
+                    Container(
+                      padding: const EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: const Color(0xFF9D21B9).withValues(alpha: 0.2),
+                          width: 1.5,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color:
+                                const Color(0xFF9D21B9).withValues(alpha: 0.1),
+                            blurRadius: 15,
+                            offset: const Offset(0, 6),
+                          ),
+                        ],
+                      ),
+                      child: Row(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              gradient: const LinearGradient(
+                                colors: [
+                                  Color(0xFF9D21B9),
+                                  Color(0xFFF956A7),
+                                ],
+                              ),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: const Icon(
+                              Icons.verified_user_rounded,
+                              color: Colors.white,
+                              size: 22,
+                            ),
+                          ),
+                          const SizedBox(width: 15),
+                          const Expanded(
+                            child: Text(
+                              'Your safety and privacy are our top priority',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Color(0xFF58127B), // Dark purple
+                                fontWeight: FontWeight.w600,
+                                height: 1.4,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    const Spacer(flex: 2),
+
+                    // Terms and Privacy with modern styling
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 20),
+                      child: RichText(
+                        textAlign: TextAlign.center,
+                        text: const TextSpan(
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Color(0xFF7E22CE), // Dark purple
+                            height: 1.5,
+                          ),
+                          children: [
+                            TextSpan(text: 'By continuing, you accept our '),
+                            TextSpan(
+                              text: 'Terms of Service',
+                              style: TextStyle(
+                                color: Color(0xFF9D21B9), // Primary purple
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            TextSpan(text: ' and '),
+                            TextSpan(
+                              text: 'Privacy Policy',
+                              style: TextStyle(
+                                color: Color(0xFF9D21B9), // Primary purple
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildHeader(double screenWidth, double screenHeight) {
-    return Column(
-      children: [
-        // Simplified App Logo
-        Image.asset(
-          'assets/logo.png',
-          width: screenWidth * 0.35, // Responsive width
-          height: screenWidth * 0.35, // Responsive height
-          // IMPORTANT: Make sure you have a 'logo.png' file in an 'assets' directory
-          // at the root of your project, and that you have declared it in your
-          // pubspec.yaml file like this:
-          //
-          // flutter:
-          //   assets:
-          //     - assets/logo.png
-        ),
-
-        const SizedBox(height: 16), // Reduced space
-
-        // Static Main Title with gradient
-        ShaderMask(
-          shaderCallback: (bounds) => const LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              Color(0xFF9D21B9),
-              Color(0xFFF956A7),
-              Color(0xFF58127B),
-              Color(0xFFE91E63),
-            ],
-            stops: [0.0, 0.3, 0.7, 1.0],
-          ).createShader(bounds),
-          child: Text(
-            'VanNari',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: screenWidth * 0.11, // Responsive font size
-              fontWeight: FontWeight.w900,
-              color: Colors.white,
-              letterSpacing: -2.0,
-              height: 1.0,
-            ),
-          ),
-        ),
-
-        const SizedBox(height: 16),
-
-        // Simplified subtitle
-        const Row(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.security,
-              color: Color(0xFF9D21B9),
-              size: 18,
-            ),
-            SizedBox(width: 12),
-            Text(
-              'Your Safety, Our Priority',
-              style: TextStyle(
-                fontSize: 16,
-                color: Color(0xFF58127B),
-                fontWeight: FontWeight.w700,
-                letterSpacing: 0.5,
-              ),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-
-  Widget _buildLoginSection() {
-    return Column(
-      children: [
-        const Text(
-          'Welcome Back',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.w800,
-            color: Color(0xFF58127B),
-            letterSpacing: -0.5,
-          ),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          'Choose your preferred sign-in method',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.w600,
-            color: const Color(0xFF7E22CE).withOpacity(0.8),
-            letterSpacing: 0.2,
-          ),
-        ),
-        const SizedBox(height: 32),
-
-        // Enhanced Google Login Button
-        _buildEnhancedGoogleLoginButton(),
-
-        const SizedBox(height: 16),
-
-        // Enhanced Apple Login Button
-        _buildEnhancedAppleLoginButton(),
-
-        const SizedBox(height: 24),
-
-        // Divider with text
-        Row(
-          children: [
-            Expanded(
-              child: Container(
-                height: 1,
-                color: Colors.grey[300],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Text(
-                'Secure & Private',
-                style: TextStyle(
-                  fontSize: 12,
-                  color: const Color(0xFF7E22CE).withOpacity(0.7),
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-            Expanded(
-              child: Container(
-                height: 1,
-                color: Colors.grey[300],
-              ),
-            ),
-          ],
-        ),
-      ],
     );
   }
 
@@ -197,10 +260,9 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 15,
-            offset: const Offset(0, 6),
-            spreadRadius: 1,
+            color: Colors.black.withValues(alpha: 0.08),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
           ),
         ],
       ),
@@ -329,172 +391,6 @@ class _LoginScreenState extends State<LoginScreen> {
               ],
             ),
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSecurityMessage() {
-    return const Row(
-      children: [
-        Icon(
-          Icons.verified_user_rounded,
-          color: Color(0xFF9D21B9),
-          size: 40,
-        ),
-        SizedBox(width: 20),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Bank-Level Security',
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Color(0xFF58127B),
-                  fontWeight: FontWeight.w800,
-                  letterSpacing: -0.3,
-                ),
-              ),
-              SizedBox(height: 6),
-              Text(
-                'Your privacy and safety data are encrypted and protected.',
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Color(0xFF7E22CE),
-                  fontWeight: FontWeight.w500,
-                  height: 1.4,
-                  letterSpacing: 0.1,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildFooter() {
-    return Column(
-      children: [
-        // Trust indicators
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            _buildTrustIndicator(Icons.security, 'Secure'),
-            const SizedBox(width: 32),
-            _buildTrustIndicator(Icons.verified, 'Verified'),
-            const SizedBox(width: 32),
-            _buildTrustIndicator(Icons.shield, 'Protected'),
-          ],
-        ),
-
-        const SizedBox(height: 32),
-
-        // Terms and Privacy
-        RichText(
-          textAlign: TextAlign.center,
-          text: const TextSpan(
-            style: TextStyle(
-              fontSize: 13,
-              color: Color(0xFF7E22CE),
-              height: 1.5,
-              letterSpacing: 0.2,
-              fontFamily: 'Inter', // Ensure consistent font
-            ),
-            children: [
-              TextSpan(
-                text: 'By continuing, you accept our ',
-                style: TextStyle(fontWeight: FontWeight.w500),
-              ),
-              TextSpan(
-                text: 'Terms of Service',
-                style: TextStyle(
-                  color: Color(0xFF9D21B9),
-                  fontWeight: FontWeight.w700,
-                  decoration: TextDecoration.underline,
-                ),
-              ),
-              TextSpan(
-                text: ' and ',
-                style: TextStyle(fontWeight: FontWeight.w500),
-              ),
-              TextSpan(
-                text: 'Privacy Policy',
-                style: TextStyle(
-                  color: Color(0xFF9D21B9),
-                  fontWeight: FontWeight.w700,
-                  decoration: TextDecoration.underline,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildTrustIndicator(IconData icon, String label) {
-    return Column(
-      children: [
-        Icon(
-          icon,
-          color: const Color(0xFF9D21B9),
-          size: 24,
-        ),
-        const SizedBox(height: 8),
-        Text(
-          label,
-          style: const TextStyle(
-            fontSize: 12,
-            color: Color(0xFF7E22CE),
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-      ],
-    );
-  }
-
-  void _showComingSoonSnackBar(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(6),
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.2),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: const Icon(
-                Icons.info_outline,
-                color: Colors.white,
-                size: 18,
-              ),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Text(
-                message,
-                style: const TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-          ],
-        ),
-        backgroundColor: const Color(0xFF9D21B9),
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
-        margin: const EdgeInsets.all(16),
-        duration: const Duration(seconds: 3),
-        action: SnackBarAction(
-          label: 'OK',
-          textColor: Colors.white,
-          onPressed: () {},
         ),
       ),
     );
