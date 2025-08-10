@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -20,21 +21,27 @@ class _LoginScreenState extends State<LoginScreen> {
       body: SafeArea(
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(height: screenHeight * 0.02), // Reduced top space
-                _buildHeader(screenWidth, screenHeight),
-                SizedBox(height: screenHeight * 0.06),
-                _buildLoginSection(),
-                SizedBox(height: screenHeight * 0.05),
-                _buildSecurityMessage(),
-                SizedBox(height: screenHeight * 0.05),
-                _buildFooter(),
-                SizedBox(height: screenHeight * 0.02),
-              ],
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+                minHeight: screenHeight - MediaQuery.of(context).padding.top),
+            child: IntrinsicHeight(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Spacer(),
+                    _buildHeader(screenWidth, screenHeight),
+                    SizedBox(height: screenHeight * 0.05),
+                    _buildLoginSection(),
+                    SizedBox(height: screenHeight * 0.04),
+                    _buildSecurityMessage(),
+                    const Spacer(),
+                    _buildFooter(),
+                    SizedBox(height: screenHeight * 0.02),
+                  ],
+                ),
+              ),
             ),
           ),
         ),
@@ -75,7 +82,7 @@ class _LoginScreenState extends State<LoginScreen> {
             stops: [0.0, 0.3, 0.7, 1.0],
           ).createShader(bounds),
           child: Text(
-            'WomenGuard',
+            'VanNari', // Changed to 'VanNari'
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: screenWidth * 0.11, // Responsive font size
@@ -209,13 +216,15 @@ class _LoginScreenState extends State<LoginScreen> {
         child: InkWell(
           onTap: () {
             HapticFeedback.mediumImpact();
-            _showComingSoonSnackBar('Google login coming soon!');
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const HomeScreen()),
+            );
           },
           borderRadius: BorderRadius.circular(20),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 // Enhanced Google Logo
                 Container(
@@ -244,16 +253,18 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 const SizedBox(width: 16),
-                const Text(
-                  'Continue with Google',
-                  style: TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.w700,
-                    color: Color(0xFF333333),
-                    letterSpacing: 0.3,
+                const Expanded(
+                  child: Text(
+                    'Continue with Google',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.w700,
+                      color: Color(0xFF333333),
+                      letterSpacing: 0.3,
+                    ),
                   ),
                 ),
-                const Spacer(),
                 Icon(
                   Icons.arrow_forward_ios,
                   size: 16,
@@ -303,7 +314,6 @@ class _LoginScreenState extends State<LoginScreen> {
           child: const Padding(
             padding: EdgeInsets.symmetric(horizontal: 24),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(
                   Icons.apple,
@@ -311,16 +321,18 @@ class _LoginScreenState extends State<LoginScreen> {
                   color: Colors.white,
                 ),
                 SizedBox(width: 16),
-                Text(
-                  'Continue with Apple',
-                  style: TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.white,
-                    letterSpacing: 0.3,
+                Expanded(
+                  child: Text(
+                    'Continue with Apple',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white,
+                      letterSpacing: 0.3,
+                    ),
                   ),
                 ),
-                Spacer(),
                 Icon(
                   Icons.arrow_forward_ios,
                   size: 16,

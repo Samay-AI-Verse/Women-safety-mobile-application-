@@ -17,25 +17,43 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   Animation<double>? _fadeAnimation;
   Animation<Offset>? _slideAnimation;
 
-  // Enhanced image list with safety-themed content
+  // Enhanced image list with more impactful, AI-focused content
   final List<Map<String, String>> slideContent = [
     {
       'image':
           'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&h=300&fit=crop',
-      'title': 'Emergency Alert',
-      'subtitle': 'Instant help when you need it most'
+      'title': 'AI Voice Shield',
+      'subtitle': 'Real-time threat detection in any conversation.'
     },
     {
       'image':
           'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&h=300&fit=crop',
-      'title': 'Location Tracking',
-      'subtitle': 'Share your location with trusted contacts'
+      'title': 'Secret SOS Command',
+      'subtitle': 'Activate help discreetly with a hidden word.'
     },
     {
       'image':
           'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=500&h=300&fit=crop',
-      'title': '24/7 Support',
-      'subtitle': 'Always here to keep you safe'
+      'title': 'Your Legal AI',
+      'subtitle': 'Instant legal advice and emotional support, 24/7.'
+    },
+    {
+      'image':
+          'https://images.unsplash.com/photo-1521791136064-7986c2920216?w=500&h=300&fit=crop',
+      'title': 'Anti-Blackmail Guard',
+      'subtitle': 'Detects and secures evidence from online threats.'
+    },
+    {
+      'image':
+          'https://images.unsplash.com/photo-1516542076-22a13ca70751?w=500&h=300&fit=crop',
+      'title': 'Safe Zone Mapping',
+      'subtitle': 'Avoid high-crime areas with intelligent alerts.'
+    },
+    {
+      'image':
+          'https://images.unsplash.com/photo-1543269865-cbf427effbad?w=500&h=300&fit=crop',
+      'title': 'Smart Health Alerts',
+      'subtitle': 'Automatic accident detection and medical assistance.'
     },
   ];
 
@@ -86,52 +104,40 @@ class _WelcomeScreenState extends State<WelcomeScreen>
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-
+    final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
-      body: Container(
-        decoration: _buildBackgroundDecoration(),
-        child: SafeArea(
-          child: Column(
-            children: [
-              _buildHeader(),
-              _buildCarouselSection(size),
-              _buildFeatureCards(),
-              _buildBottomSection(),
-            ],
-          ),
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: Column(
+          children: [
+            SizedBox(height: screenHeight * 0.02),
+            _buildHeader(),
+            _buildCarouselSection(screenHeight),
+            const Spacer(),
+            _buildBottomSection(),
+            SizedBox(height: screenHeight * 0.02),
+          ],
         ),
       ),
-    );
-  }
-
-  BoxDecoration _buildBackgroundDecoration() {
-    return const BoxDecoration(
-      color: Colors.white,
     );
   }
 
   Widget _buildHeader() {
     return FadeTransition(
       opacity: _fadeAnimation ?? const AlwaysStoppedAnimation(1.0),
-      child: Container(
-        padding: const EdgeInsets.all(24.0),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24.0),
         child: Column(
           children: [
-            // App Logo/Icon
             SizedBox(
-              width: 150,
-              height: 150,
+              width: 120,
+              height: 120,
               child: Image.asset(
-                'assets/logo.png', // Replace 'logo.png' with your actual logo filename
-                width: 80,
-                height: 80,
+                'assets/logo.png',
                 fit: BoxFit.contain,
               ),
             ),
-            const SizedBox(height: 0),
-
-            // Title
+            const SizedBox(height: 8),
             const Text(
               'VanNari',
               style: TextStyle(
@@ -142,10 +148,8 @@ class _WelcomeScreenState extends State<WelcomeScreen>
               ),
             ),
             const SizedBox(height: 8),
-
-            // Subtitle
             Text(
-              'Your safety, our commitment',
+              'AI-Powered Personal Safety',
               style: TextStyle(
                 fontSize: 16,
                 color: Colors.grey[600],
@@ -159,11 +163,11 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     );
   }
 
-  Widget _buildCarouselSection(Size size) {
+  Widget _buildCarouselSection(double screenHeight) {
     return SlideTransition(
       position: _slideAnimation ?? const AlwaysStoppedAnimation(Offset.zero),
       child: Container(
-        height: size.height * 0.35,
+        height: screenHeight * 0.38,
         margin: const EdgeInsets.symmetric(vertical: 20),
         child: Column(
           children: [
@@ -185,6 +189,8 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                       _currentIndex = index;
                     });
                   },
+                  // This line removes the dots on the images
+                  showIndicator: false,
                 ),
               ),
             ),
@@ -203,7 +209,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.1),
+            color: Colors.black.withOpacity(0.1),
             blurRadius: 20,
             offset: const Offset(0, 10),
             spreadRadius: 2,
@@ -230,6 +236,12 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                   ),
                 );
               },
+              errorBuilder: (context, error, stackTrace) {
+                return Container(
+                  color: Colors.grey[200],
+                  child: const Icon(Icons.broken_image, color: Colors.grey),
+                );
+              },
             ),
             Container(
               decoration: BoxDecoration(
@@ -238,8 +250,9 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                   end: Alignment.bottomCenter,
                   colors: [
                     Colors.transparent,
-                    Colors.black.withValues(alpha: 0.7),
+                    Colors.black.withOpacity(0.7),
                   ],
+                  stops: const [0.5, 1.0],
                 ),
               ),
             ),
@@ -256,13 +269,20 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                       color: Colors.white,
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
+                      shadows: [
+                        Shadow(
+                          blurRadius: 10.0,
+                          color: Colors.black,
+                          offset: Offset(2.0, 2.0),
+                        ),
+                      ],
                     ),
                   ),
                   const SizedBox(height: 8),
                   Text(
                     content['subtitle']!,
                     style: const TextStyle(
-                      color: Colors.white70,
+                      color: Colors.white,
                       fontSize: 14,
                     ),
                   ),
@@ -281,7 +301,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
       children: slideContent.asMap().entries.map((entry) {
         return AnimatedContainer(
           duration: const Duration(milliseconds: 300),
-          width: _currentIndex == entry.key ? 32 : 8,
+          width: _currentIndex == entry.key ? 24 : 8,
           height: 8,
           margin: const EdgeInsets.symmetric(horizontal: 4),
           decoration: BoxDecoration(
@@ -295,67 +315,57 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     );
   }
 
-  Widget _buildFeatureCards() {
-    return const SizedBox.shrink(); // Remove feature cards
-  }
-
   Widget _buildBottomSection() {
-    return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.all(24.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            // Get Started Button
-            Container(
-              width: double.infinity,
-              height: 56,
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [Color(0xFF9D21B9), Color(0xFFF956A7)],
-                ),
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: [
-                  BoxShadow(
-                    color: const Color(0xFF9D21B9).withValues(alpha: 0.4),
-                    blurRadius: 15,
-                    offset: const Offset(0, 8),
-                  ),
-                ],
+    return Padding(
+      padding: const EdgeInsets.all(24.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Container(
+            width: double.infinity,
+            height: 56,
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                colors: [Color(0xFF9D21B9), Color(0xFFF956A7)],
               ),
-              child: Material(
-                color: Colors.transparent,
-                child: InkWell(
-                  onTap: () => _navigateToLogin(),
-                  borderRadius: BorderRadius.circular(16),
-                  child: const Center(
-                    child: Text(
-                      'Get Started',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.white,
-                        letterSpacing: 0.5,
-                      ),
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0xFF9D21B9).withOpacity(0.4),
+                  blurRadius: 15,
+                  offset: const Offset(0, 8),
+                ),
+              ],
+            ),
+            child: Material(
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: () => _navigateToLogin(),
+                borderRadius: BorderRadius.circular(16),
+                child: const Center(
+                  child: Text(
+                    'Get Started',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white,
+                      letterSpacing: 0.5,
                     ),
                   ),
                 ),
               ),
             ),
-            const SizedBox(height: 16),
-
-            // Secondary text
-            Text(
-              'Join thousands of women staying safe',
-              style: TextStyle(
-                fontSize: 14,
-                color: Colors.grey[600],
-                fontWeight: FontWeight.w500,
-              ),
+          ),
+          const SizedBox(height: 16),
+          Text(
+            'Empowering you with proactive safety.',
+            style: TextStyle(
+              fontSize: 14,
+              color: Colors.grey[600],
+              fontWeight: FontWeight.w500,
             ),
-            const SizedBox(height: 32),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
