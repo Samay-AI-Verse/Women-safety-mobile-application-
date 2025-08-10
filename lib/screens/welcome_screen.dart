@@ -133,7 +133,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
 
             // Title
             const Text(
-              'Women Safety',
+              'VanNari',
               style: TextStyle(
                 fontSize: 32,
                 fontWeight: FontWeight.w800,

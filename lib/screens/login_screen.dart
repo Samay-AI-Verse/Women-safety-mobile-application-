@@ -11,27 +11,30 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
+    // Using MediaQuery to make layout responsive
+    final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Container(
-        decoration: _buildBackgroundDecoration(),
-        child: SafeArea(
-          child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 28.0),
-              child: Column(
-                children: [
-                  const SizedBox(height: 40),
-                  _buildHeader(),
-                  const SizedBox(height: 60),
-                  _buildLoginSection(),
-                  const SizedBox(height: 40),
-                  _buildSecurityMessage(),
-                  const SizedBox(height: 50),
-                  _buildFooter(),
-                ],
-              ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.07),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(height: screenHeight * 0.02), // Reduced top space
+                _buildHeader(screenWidth, screenHeight),
+                SizedBox(height: screenHeight * 0.06),
+                _buildLoginSection(),
+                SizedBox(height: screenHeight * 0.05),
+                _buildSecurityMessage(),
+                SizedBox(height: screenHeight * 0.05),
+                _buildFooter(),
+                SizedBox(height: screenHeight * 0.02),
+              ],
             ),
           ),
         ),
@@ -39,100 +42,26 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  BoxDecoration _buildBackgroundDecoration() {
-    return const BoxDecoration(
-      gradient: RadialGradient(
-        center: Alignment.topCenter,
-        radius: 1.5,
-        colors: [
-          Color(0xFFFFFFFF),
-          Color(0xFFF8F5FF),
-          Color(0xFFF0EBFF),
-        ],
-        stops: [0.0, 0.6, 1.0],
-      ),
-    );
-  }
-
-  Widget _buildHeader() {
+  Widget _buildHeader(double screenWidth, double screenHeight) {
     return Column(
       children: [
-        // Enhanced App Logo with multiple layers - NOW STATIC
-        Stack(
-          alignment: Alignment.center,
-          children: [
-            // Outer glow effect
-            Container(
-              width: 140,
-              height: 140,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(35),
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    const Color(0xFF9D21B9).withOpacity(0.1),
-                    const Color(0xFFF956A7).withOpacity(0.1),
-                  ],
-                ),
-              ),
-            ),
-            // Main logo container
-            Container(
-              width: 130,
-              height: 130,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(32),
-                gradient: const LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    Color(0xFF9D21B9),
-                    Color(0xFFF956A7),
-                    Color(0xFFE91E63),
-                  ],
-                  stops: [0.0, 0.6, 1.0],
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: const Color(0xFF9D21B9).withOpacity(0.4),
-                    blurRadius: 30,
-                    spreadRadius: 5,
-                    offset: const Offset(0, 12),
-                  ),
-                  BoxShadow(
-                    color: const Color(0xFFF956A7).withOpacity(0.3),
-                    blurRadius: 20,
-                    spreadRadius: 2,
-                    offset: const Offset(0, 8),
-                  ),
-                ],
-              ),
-              child: const Icon(
-                Icons.shield_rounded,
-                color: Colors.white,
-                size: 65,
-              ),
-            ),
-            // Inner highlight
-            Positioned(
-              top: 25,
-              left: 25,
-              child: Container(
-                width: 35,
-                height: 35,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  color: Colors.white.withOpacity(0.2),
-                ),
-              ),
-            ),
-          ],
+        // Simplified App Logo
+        Image.asset(
+          'assets/logo.png',
+          width: screenWidth * 0.35, // Responsive width
+          height: screenWidth * 0.35, // Responsive height
+          // IMPORTANT: Make sure you have a 'logo.png' file in an 'assets' directory
+          // at the root of your project, and that you have declared it in your
+          // pubspec.yaml file like this:
+          //
+          // flutter:
+          //   assets:
+          //     - assets/logo.png
         ),
 
-        const SizedBox(height: 32),
+        const SizedBox(height: 16), // Reduced space
 
-        // Static Main Title with gradient (NO ANIMATION)
+        // Static Main Title with gradient
         ShaderMask(
           shaderCallback: (bounds) => const LinearGradient(
             begin: Alignment.topLeft,
@@ -145,11 +74,11 @@ class _LoginScreenState extends State<LoginScreen> {
             ],
             stops: [0.0, 0.3, 0.7, 1.0],
           ).createShader(bounds),
-          child: const Text(
-            'WomenGuard',
+          child: Text(
+            'VanNari',
             textAlign: TextAlign.center,
             style: TextStyle(
-              fontSize: 48,
+              fontSize: screenWidth * 0.11, // Responsive font size
               fontWeight: FontWeight.w900,
               color: Colors.white,
               letterSpacing: -2.0,
@@ -160,58 +89,27 @@ class _LoginScreenState extends State<LoginScreen> {
 
         const SizedBox(height: 16),
 
-        // Static subtitle (NO ANIMATION)
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                const Color(0xFF9D21B9).withOpacity(0.1),
-                const Color(0xFFF956A7).withOpacity(0.1),
-              ],
+        // Simplified subtitle
+        const Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.security,
+              color: Color(0xFF9D21B9),
+              size: 18,
             ),
-            borderRadius: BorderRadius.circular(30),
-            border: Border.all(
-              color: const Color(0xFF9D21B9).withOpacity(0.2),
-              width: 1.5,
+            SizedBox(width: 12),
+            Text(
+              'Your Safety, Our Priority',
+              style: TextStyle(
+                fontSize: 16,
+                color: Color(0xFF58127B),
+                fontWeight: FontWeight.w700,
+                letterSpacing: 0.5,
+              ),
             ),
-            boxShadow: [
-              BoxShadow(
-                color: const Color(0xFF9D21B9).withOpacity(0.1),
-                blurRadius: 15,
-                offset: const Offset(0, 4),
-              ),
-            ],
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                padding: const EdgeInsets.all(6),
-                decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    colors: [Color(0xFF9D21B9), Color(0xFFF956A7)],
-                  ),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: const Icon(
-                  Icons.security,
-                  color: Colors.white,
-                  size: 16,
-                ),
-              ),
-              const SizedBox(width: 12),
-              const Text(
-                'Your Safety, Our Priority',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Color(0xFF58127B),
-                  fontWeight: FontWeight.w700,
-                  letterSpacing: 0.5,
-                ),
-              ),
-            ],
-          ),
+          ],
         ),
       ],
     );
@@ -220,107 +118,66 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget _buildLoginSection() {
     return Column(
       children: [
-        // Professional section header (STATIC - NO ANIMATION)
-        Container(
-          width: double.infinity,
-          padding: const EdgeInsets.symmetric(vertical: 24),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(24),
-            border: Border.all(
-              color: const Color(0xFF9D21B9).withOpacity(0.15),
-              width: 2,
+        const Text(
+          'Welcome Back',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.w800,
+            color: Color(0xFF58127B),
+            letterSpacing: -0.5,
+          ),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          'Choose your preferred sign-in method',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.w600,
+            color: const Color(0xFF7E22CE).withOpacity(0.8),
+            letterSpacing: 0.2,
+          ),
+        ),
+        const SizedBox(height: 32),
+
+        // Enhanced Google Login Button
+        _buildEnhancedGoogleLoginButton(),
+
+        const SizedBox(height: 16),
+
+        // Enhanced Apple Login Button
+        _buildEnhancedAppleLoginButton(),
+
+        const SizedBox(height: 24),
+
+        // Divider with text
+        Row(
+          children: [
+            Expanded(
+              child: Container(
+                height: 1,
+                color: Colors.grey[300],
+              ),
             ),
-            boxShadow: [
-              BoxShadow(
-                color: const Color(0xFF9D21B9).withOpacity(0.08),
-                blurRadius: 25,
-                offset: const Offset(0, 10),
-                spreadRadius: 2,
-              ),
-            ],
-          ),
-          child: Column(
-            children: [
-              const Text(
-                'Welcome Back',
-                textAlign: TextAlign.center,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Text(
+                'Secure & Private',
                 style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.w800,
-                  color: Color(0xFF58127B),
-                  letterSpacing: -0.5,
-                ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                'Choose your preferred sign-in method',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 15,
+                  fontSize: 12,
+                  color: const Color(0xFF7E22CE).withOpacity(0.7),
                   fontWeight: FontWeight.w600,
-                  color: const Color(0xFF7E22CE).withOpacity(0.8),
-                  letterSpacing: 0.2,
                 ),
               ),
-              const SizedBox(height: 32),
-
-              // Enhanced Google Login Button (STATIC)
-              _buildEnhancedGoogleLoginButton(),
-
-              const SizedBox(height: 16),
-
-              // Enhanced Apple Login Button (STATIC)
-              _buildEnhancedAppleLoginButton(),
-
-              const SizedBox(height: 24),
-
-              // Divider with text (STATIC)
-              Row(
-                children: [
-                  Expanded(
-                    child: Container(
-                      height: 1,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            Colors.transparent,
-                            const Color(0xFF9D21B9).withOpacity(0.3),
-                            Colors.transparent,
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Text(
-                      'Secure & Private',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: const Color(0xFF7E22CE).withOpacity(0.7),
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Container(
-                      height: 1,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            Colors.transparent,
-                            const Color(0xFF9D21B9).withOpacity(0.3),
-                            Colors.transparent,
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
+            ),
+            Expanded(
+              child: Container(
+                height: 1,
+                color: Colors.grey[300],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ],
     );
@@ -344,11 +201,6 @@ class _LoginScreenState extends State<LoginScreen> {
             blurRadius: 15,
             offset: const Offset(0, 6),
             spreadRadius: 1,
-          ),
-          BoxShadow(
-            color: const Color(0xFF4285F4).withOpacity(0.1),
-            blurRadius: 10,
-            offset: const Offset(0, 3),
           ),
         ],
       ),
@@ -483,91 +335,49 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget _buildSecurityMessage() {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 8),
-      padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(24),
-        border: Border.all(
-          color: const Color(0xFF9D21B9).withOpacity(0.2),
-          width: 2,
+    return const Row(
+      children: [
+        Icon(
+          Icons.verified_user_rounded,
+          color: Color(0xFF9D21B9),
+          size: 40,
         ),
-        boxShadow: [
-          BoxShadow(
-            color: const Color(0xFF9D21B9).withOpacity(0.1),
-            blurRadius: 20,
-            offset: const Offset(0, 8),
-            spreadRadius: 2,
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 60,
-            height: 60,
-            decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  Color(0xFF9D21B9),
-                  Color(0xFFF956A7),
-                ],
+        SizedBox(width: 20),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Bank-Level Security',
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Color(0xFF58127B),
+                  fontWeight: FontWeight.w800,
+                  letterSpacing: -0.3,
+                ),
               ),
-              borderRadius: BorderRadius.circular(18),
-              boxShadow: [
-                BoxShadow(
-                  color: const Color(0xFF9D21B9).withOpacity(0.3),
-                  blurRadius: 10,
-                  offset: const Offset(0, 4),
+              SizedBox(height: 6),
+              Text(
+                'Your privacy and safety data are encrypted and protected.',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Color(0xFF7E22CE),
+                  fontWeight: FontWeight.w500,
+                  height: 1.4,
+                  letterSpacing: 0.1,
                 ),
-              ],
-            ),
-            child: const Icon(
-              Icons.verified_user_rounded,
-              color: Colors.white,
-              size: 28,
-            ),
+              ),
+            ],
           ),
-          const SizedBox(width: 20),
-          const Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Bank-Level Security',
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Color(0xFF58127B),
-                    fontWeight: FontWeight.w800,
-                    letterSpacing: -0.3,
-                  ),
-                ),
-                SizedBox(height: 6),
-                Text(
-                  'Your privacy and safety data are encrypted and protected with industry-leading security standards.',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Color(0xFF7E22CE),
-                    fontWeight: FontWeight.w500,
-                    height: 1.4,
-                    letterSpacing: 0.1,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
   Widget _buildFooter() {
     return Column(
       children: [
-        // Trust indicators (STATIC - NO ANIMATION)
+        // Trust indicators
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -581,66 +391,45 @@ class _LoginScreenState extends State<LoginScreen> {
 
         const SizedBox(height: 32),
 
-        // Enhanced Terms and Privacy (STATIC)
-        Container(
-          padding: const EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            color: const Color(0xFF9D21B9).withOpacity(0.05),
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(
-              color: const Color(0xFF9D21B9).withOpacity(0.1),
-              width: 1,
+        // Terms and Privacy
+        RichText(
+          textAlign: TextAlign.center,
+          text: const TextSpan(
+            style: TextStyle(
+              fontSize: 13,
+              color: Color(0xFF7E22CE),
+              height: 1.5,
+              letterSpacing: 0.2,
+              fontFamily: 'Inter', // Ensure consistent font
             ),
-          ),
-          child: RichText(
-            textAlign: TextAlign.center,
-            text: const TextSpan(
-              style: TextStyle(
-                fontSize: 13,
-                color: Color(0xFF7E22CE),
-                height: 1.5,
-                letterSpacing: 0.2,
+            children: [
+              TextSpan(
+                text: 'By continuing, you accept our ',
+                style: TextStyle(fontWeight: FontWeight.w500),
               ),
-              children: [
-                TextSpan(
-                  text: 'By continuing, you accept our ',
-                  style: TextStyle(fontWeight: FontWeight.w500),
+              TextSpan(
+                text: 'Terms of Service',
+                style: TextStyle(
+                  color: Color(0xFF9D21B9),
+                  fontWeight: FontWeight.w700,
+                  decoration: TextDecoration.underline,
                 ),
-                TextSpan(
-                  text: 'Terms of Service',
-                  style: TextStyle(
-                    color: Color(0xFF9D21B9),
-                    fontWeight: FontWeight.w700,
-                    decoration: TextDecoration.underline,
-                  ),
+              ),
+              TextSpan(
+                text: ' and ',
+                style: TextStyle(fontWeight: FontWeight.w500),
+              ),
+              TextSpan(
+                text: 'Privacy Policy',
+                style: TextStyle(
+                  color: Color(0xFF9D21B9),
+                  fontWeight: FontWeight.w700,
+                  decoration: TextDecoration.underline,
                 ),
-                TextSpan(
-                  text: ' and ',
-                  style: TextStyle(fontWeight: FontWeight.w500),
-                ),
-                TextSpan(
-                  text: 'Privacy Policy',
-                  style: TextStyle(
-                    color: Color(0xFF9D21B9),
-                    fontWeight: FontWeight.w700,
-                    decoration: TextDecoration.underline,
-                  ),
-                ),
-                TextSpan(
-                  text:
-                      '\n\nYour data is never shared without your explicit consent.',
-                  style: TextStyle(
-                    fontSize: 11,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xFF58127B),
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
-
-        const SizedBox(height: 20),
       ],
     );
   }
@@ -648,25 +437,10 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget _buildTrustIndicator(IconData icon, String label) {
     return Column(
       children: [
-        Container(
-          padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                const Color(0xFF9D21B9).withOpacity(0.1),
-                const Color(0xFFF956A7).withOpacity(0.1),
-              ],
-            ),
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(
-              color: const Color(0xFF9D21B9).withOpacity(0.2),
-            ),
-          ),
-          child: Icon(
-            icon,
-            color: const Color(0xFF9D21B9),
-            size: 20,
-          ),
+        Icon(
+          icon,
+          color: const Color(0xFF9D21B9),
+          size: 24,
         ),
         const SizedBox(height: 8),
         Text(
