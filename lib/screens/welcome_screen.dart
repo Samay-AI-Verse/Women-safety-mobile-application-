@@ -120,16 +120,27 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: Column(
-          children: [
-            SizedBox(height: screenHeight * 0.02),
-            _buildHeader(),
-            _buildCarouselSection(screenHeight),
-            _buildCompactWelcomeSection(),
-            const Spacer(),
-            _buildBottomSection(),
-            SizedBox(height: screenHeight * 0.02),
-          ],
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    SizedBox(height: screenHeight * 0.02),
+                    _buildHeader(),
+                    _buildCarouselSection(screenHeight),
+                    _buildCompactWelcomeSection(),
+                    _buildBottomSection(),
+                    SizedBox(height: screenHeight * 0.02),
+                  ],
+                ),
+              ),
+            );
+          },
         ),
       ),
     );
@@ -152,7 +163,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
             ),
             const SizedBox(height: 8),
             const Text(
-              'VanNari',
+              'Shakti',
               style: TextStyle(
                 fontSize: 32,
                 fontWeight: FontWeight.w800,
@@ -434,20 +445,20 @@ class _WelcomeScreenState extends State<WelcomeScreen>
               color: const Color(0xFF9D21B9).withOpacity(0.1),
               borderRadius: BorderRadius.circular(8),
             ),
-            child: Row(
+            child: const Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Icon(
                   Icons.verified,
-                  color: const Color(0xFF9D21B9),
+                  color: Color(0xFF9D21B9),
                   size: 14,
                 ),
-                const SizedBox(width: 4),
+                SizedBox(width: 4),
                 Text(
                   '50K+',
                   style: TextStyle(
                     fontSize: 12,
-                    color: const Color(0xFF9D21B9),
+                    color: Color(0xFF9D21B9),
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -461,7 +472,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
 
   Widget _buildBottomSection() {
     return Padding(
-      padding: const EdgeInsets.all(24.0),
+      padding: const EdgeInsets.fromLTRB(24.0, 8.0, 24.0, 12.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
@@ -500,15 +511,8 @@ class _WelcomeScreenState extends State<WelcomeScreen>
               ),
             ),
           ),
-          const SizedBox(height: 16),
-          Text(
-            'Empowering you with proactive safety.',
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.grey[600],
-              fontWeight: FontWeight.w500,
-            ),
-          ),
+        
+          
         ],
       ),
     );

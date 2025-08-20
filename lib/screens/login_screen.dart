@@ -34,8 +34,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     _buildHeader(screenWidth, screenHeight),
                     SizedBox(height: screenHeight * 0.05),
                     _buildLoginSection(),
-                    SizedBox(height: screenHeight * 0.04),
-                    _buildSecurityMessage(),
                     const Spacer(),
                     _buildFooter(),
                     SizedBox(height: screenHeight * 0.02),
@@ -82,7 +80,7 @@ class _LoginScreenState extends State<LoginScreen> {
             stops: [0.0, 0.3, 0.7, 1.0],
           ).createShader(bounds),
           child: Text(
-            'VanNari', // Changed to 'VanNari'
+            'Shakti',
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: screenWidth * 0.11, // Responsive font size
@@ -184,6 +182,20 @@ class _LoginScreenState extends State<LoginScreen> {
                 color: Colors.grey[300],
               ),
             ),
+          ],
+        ),
+
+        const SizedBox(height: 30),
+
+        // Moved trust indicators closer to the login options with a small gap
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _buildTrustIndicator(Icons.security, 'Secure'),
+            const SizedBox(width: 16),
+            _buildTrustIndicator(Icons.verified, 'Verified'),
+            const SizedBox(width: 16),
+            _buildTrustIndicator(Icons.shield, 'Protected'),
           ],
         ),
       ],
@@ -346,63 +358,9 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget _buildSecurityMessage() {
-    return const Row(
-      children: [
-        Icon(
-          Icons.verified_user_rounded,
-          color: Color(0xFF9D21B9),
-          size: 40,
-        ),
-        SizedBox(width: 20),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Bank-Level Security',
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Color(0xFF58127B),
-                  fontWeight: FontWeight.w800,
-                  letterSpacing: -0.3,
-                ),
-              ),
-              SizedBox(height: 6),
-              Text(
-                'Your privacy and safety data are encrypted and protected.',
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Color(0xFF7E22CE),
-                  fontWeight: FontWeight.w500,
-                  height: 1.4,
-                  letterSpacing: 0.1,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
   Widget _buildFooter() {
     return Column(
       children: [
-        // Trust indicators
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            _buildTrustIndicator(Icons.security, 'Secure'),
-            const SizedBox(width: 32),
-            _buildTrustIndicator(Icons.verified, 'Verified'),
-            const SizedBox(width: 32),
-            _buildTrustIndicator(Icons.shield, 'Protected'),
-          ],
-        ),
-
-        const SizedBox(height: 32),
-
         // Terms and Privacy
         RichText(
           textAlign: TextAlign.center,

@@ -41,6 +41,8 @@ dependencies:
   flutter_secure_storage: ^5.0.2
   flutter_carousel_slider: ^1.1.0
   carousel_slider: ^5.1.1
+  # For launching the Google sign-in URL
+  flutter_web_auth_2: ^3.0.3
 
 dev_dependencies:
   flutter_test:
